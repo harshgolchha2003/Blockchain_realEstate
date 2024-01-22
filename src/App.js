@@ -16,13 +16,21 @@ import Escrow from './abis/Escrow.json'
 import config from './config.json';
 
 function App() {
-
+  
+  const loadBlockachainData=async()=>{
+    const provider=new ethers.providers.Web3Provider(window.ethereum)
+    
+    console.log(provider)
+  }
+  useEffect(()=>{
+    loadBlockachainData();
+  },[])
   return (
     <div>
 
       <div className='cards__section'>
 
-        <h3>Welcome to Millow</h3>
+        <h3>Welcome to Millow!</h3>
 
       </div>
 
