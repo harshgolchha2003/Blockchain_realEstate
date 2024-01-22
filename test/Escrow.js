@@ -34,7 +34,8 @@ describe('Escrow', () => {
 
     describe('Deployment', async() => {
         it('Returns NFT address', async() => {
-            expect(await escrow.nftAddress()).to.be.equal(realEstate.address);
+            const result=await escrow.nftAddress();
+            expect(result).to.be.equal(realEstate.address);
         })
         it('Returns seller', async()=> {
             const  result= await escrow.seller()
