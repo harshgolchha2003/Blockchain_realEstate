@@ -16,11 +16,12 @@ import Escrow from './abis/Escrow.json'
 import config from './config.json';
 
 function App() {
-  
+  const [account, setAccount] =useState(null)
   const loadBlockachainData=async()=>{
     const provider=new ethers.providers.Web3Provider(window.ethereum)
     const accounts=await window.ethereum.request({method:'eth_requestAccounts'});
-    console.log(provider)
+    setAccount(accounts[0])
+    console.log(account)
   }
   useEffect(()=>{
     loadBlockachainData();
