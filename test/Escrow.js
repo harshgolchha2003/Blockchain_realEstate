@@ -34,8 +34,7 @@ describe('Escrow', () => {
 
     describe('Deployment', async() => {
         it('Returns NFT address', async() => {
-            const result= await escrow.nftAddress()
-            expect(result).to.be.equal(realEstate.address);
+            expect(await escrow.nftAddress()).to.be.equal(realEstate.address);
         })
         it('Returns seller', async()=> {
             const  result= await escrow.seller()
@@ -79,23 +78,23 @@ describe('Escrow', () => {
             })
     })
 
-    // describe("Deposits",async()=>{
-    //     it('Updates contract Balance',async()=>{
-    //         const transaction= await escrow.connect(buyer).depositEarnest(1,{value:tokens(5)});
-    //         await transaction.wait();
-    //         const result=await escrow.getBalance();
-    //         expect(result).to.be.equal(tokens(5));
-    //     })
-    // })
+    describe("Deposits",async()=>{
+        it('Updates contract Balance',async()=>{
+            const transaction= await escrow.connect(buyer).depositEarnest(1,{value:tokens(5)});
+            await transaction.wait();
+            const result=await escrow.getBalance();
+            expect(result).to.be.equal(tokens(5));
+        })
+    })
 
-    // describe("Inspection",async()=>{
-    //     it('Inspection Status',async()=>{
-    //         const transaction= await escrow.connect(inspector).updateInspectionStatus(1,true);
-    //         await transaction.wait();
-    //         const result=await escrow.inspectionPassed(1);
-    //         expect(result).to.be.equal(true);
-    //     })
-    // })
+    describe("Inspection",async()=>{
+        it('Inspection Status',async()=>{
+            const transaction= await escrow.connect(inspector).updateInspectionStatus(1,true);
+            await transaction.wait();
+            const result=await escrow.inspectionPassed(1);
+            expect(result).to.be.equal(true);
+        })
+    })
 
 
     // describe('Approval', async() => {
