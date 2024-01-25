@@ -119,25 +119,29 @@ header {
   text-align: center;
 }
 
+.head{
+  display: flex;
+}
+
 .header__search {
   padding: 25px;
   min-width: 40%;
-
   position: absolute;
   top: 45%;
   left: 50%;
+  /* outline:1px solid black; */
   transform: translate(-50%, -50%);
 }
-
-.header__search::placeholder {
-  font-family: "Open Sans";
-  font-size: 1.25em;
-  font-weight: 600;
+#results{
+  color: brown;
 }
 
-.header__search:hover {
+
+
+
+/* .header__search:hover {
   outline: 1px solid var(--clr-blue);
-}
+} */
 
 /* ------------------------------------------------------ */
 /* -- CARDS -- */
