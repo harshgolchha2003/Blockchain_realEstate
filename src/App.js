@@ -16,8 +16,8 @@ import Escrow from './abis/Escrow.json'
 import config from './config.json';
 
 function App() {
-  const homesArray=new Array
-  const[homes,setHomes]=useState(homesArray)
+  // const homesArray=new Array/
+  const[homes,setHomes]=useState([])
   const [account, setAccount] =useState(null)
   const[provider,setProvider]=useState(null)
   const[escrow,setEscrow]=useState(null)
@@ -59,6 +59,8 @@ function App() {
     })
   }
   useEffect(()=>{
+    setHomes([])
+    
     loadBlockachainData();
   },[])
   return (
@@ -73,7 +75,7 @@ function App() {
        
             {homes.map((home,index)=>( 
              
-             <div className='card' key="index">
+             <div className='card' key={index}>
                 <div className='card__image'>
                   <img src="home.image" alt="Home"/>
                 </div>
@@ -81,11 +83,11 @@ function App() {
               <div className='card__info'>
                 <h4>${home.attributes[0].value}ETH</h4>
                 <p>
-                  <strong>${home.attributes[2].value}</strong> beds|
-                  <strong>${home.attributes[3].value}</strong> bathrooms|
-                  <strong>${home.attributes[4].value}</strong>  sqft
+                  <strong>{home.attributes[2].value}</strong> beds|
+                  <strong>{home.attributes[3].value}</strong> bathrooms|
+                  <strong>{home.attributes[4].value}</strong>  sqft
                 </p>
-                <p>${home.address}</p>
+                <p>{home.address}</p>
               </div>
             </div>
               ))}  
