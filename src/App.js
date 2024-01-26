@@ -16,13 +16,15 @@ import Escrow from './abis/Escrow.json'
 import config from './config.json';
 
 function App() {
-  const[homes,setHomes]=useState(null)
+  const homesArray=new Array
+  const[homes,setHomes]=useState(homesArray)
   const [account, setAccount] =useState(null)
   const[provider,setProvider]=useState(null)
   const[escrow,setEscrow]=useState(null)
+  // console.log("a")
   const loadBlockachainData=async()=>{
     const provider=new ethers.providers.Web3Provider(window.ethereum)
-
+    // console.log("aaaaa")
     setProvider(provider)
 
     const network=await provider.getNetwork()
@@ -31,13 +33,20 @@ function App() {
     const realEstate=new ethers.Contract( config[network.chainId].realEstate.address,RealEstate,provider)
     const totalSupply=await realEstate.total_Supply()
     var homes=[];
+    // var prevHomes=[];
+    // console.log(totalSupply)
     for(let i=1;i<=totalSupply;i++){
       const uri=await realEstate.tokenURI(i);
       const response=await fetch(uri)
       const metadata=await response.json()
-      homes.push(metadata);
+      // console.log(response)
+      // homes.push(metadata);
+      setHomes((prevHomes) => [
+        ...prevHomes,
+        metadata,
+    ]);
     }
-    setHomes(homes)
+    // setHomes(homes)
     // console.log(homes)
     const escrow=new ethers.Contract( config[network.chainId].escrow.address,Escrow,provider)
     setEscrow(escrow);
@@ -61,11 +70,9 @@ function App() {
         <h3>Homes for You</h3>
           <hr/>
         <div className='cards'>
-         <script>
-          console.log()
-          console.log(homes)
-         </script>
+       
             {homes.map((home,index)=>( 
+             
              <div className='card' key="index">
                 <div className='card__image'>
                   <img src="home.image" alt="Home"/>
