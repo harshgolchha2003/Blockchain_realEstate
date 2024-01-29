@@ -15,13 +15,15 @@ import Escrow from './abis/Escrow.json'
 // Config
 import config from './config.json';
 
+const r=1;
 function App() {
-  // const homesArray=new Array/
   const[homes,setHomes]=useState([])
+  const[home,setHome]=useState({})
   const [account, setAccount] =useState(null)
-  const[provider,setProvider]=useState(null)
-  const[escrow,setEscrow]=useState(null)
-  // console.log("a")
+  const [provider,setProvider]=useState(null)
+  const [escrow,setEscrow]=useState(null)
+  const [toggle,setToggle]=useState(false)
+
   const loadBlockachainData=async()=>{
     const provider=new ethers.providers.Web3Provider(window.ethereum)
     // console.log("aaaaa")
@@ -29,25 +31,18 @@ function App() {
 
     const network=await provider.getNetwork()
 
-    // config[network.chainId].escrow.address
     const realEstate=new ethers.Contract( config[network.chainId].realEstate.address,RealEstate,provider)
     const totalSupply=await realEstate.total_Supply()
-    var homes=[];
-    // var prevHomes=[];
-    // console.log(totalSupply)
+    setHomes([])
     for(let i=1;i<=totalSupply;i++){
       const uri=await realEstate.tokenURI(i);
       const response=await fetch(uri)
       const metadata=await response.json()
-      // console.log(response)
-      // homes.push(metadata);
       setHomes((prevHomes) => [
         ...prevHomes,
         metadata,
     ]);
     }
-    // setHomes(homes)
-    // console.log(homes)
     const escrow=new ethers.Contract( config[network.chainId].escrow.address,Escrow,provider)
     setEscrow(escrow);
 
@@ -59,10 +54,19 @@ function App() {
     })
   }
   useEffect(()=>{
-    setHomes([])
-    
+    setHomes([]) 
     loadBlockachainData();
-  },[])
+    // return ()=>clearInterval(id);
+    
+
+    
+  },([]))
+
+  const togglePop=(home)=>{
+    // console.log(home)
+    setHome(home);
+    toggle? setToggle(false):setToggle(true);
+  }
   return (
     <div>
       <Navigation account={account} setAccount={setAccount}/>
@@ -72,12 +76,11 @@ function App() {
         <h3>Homes for You</h3>
           <hr/>
         <div className='cards'>
-       
             {homes.map((home,index)=>( 
              
-             <div className='card' key={index}>
+             <div className='card' key={index} onClick={()=>togglePop(home)}>
                 <div className='card__image'>
-                  <img src="home.image" alt="Home"/>
+                  <img src={home.image} alt="Home"/>
                 </div>
 
               <div className='card__info'>
@@ -93,7 +96,8 @@ function App() {
               ))}  
         </div>
       </div>
-
+      {toggle &&(<Home home={home} provider={provider} account={account} escrow={escrow} togglePop={togglePop}/>)
+      }
     </div>
   );
 }
