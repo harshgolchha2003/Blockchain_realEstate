@@ -103,13 +103,16 @@ function App() {
       if(search!=="")
       {
          homes.map((home,index)=>{
-          if(home.description.includes(search)){
+          if(home.description.toLowerCase().includes(search.toLowerCase())){
               setSearchHome((prevHomes) => [
                   ...prevHomes,
                   home,
               ]);
           }
          })
+      }
+      else {
+        setSearchHome([])
       }
   },[search])
 
