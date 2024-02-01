@@ -102,14 +102,10 @@ function App() {
   useEffect(()=>{
       if(search!=="")
       {
-         homes.map((home,index)=>{
-          if(home.description.toLowerCase().includes(search.toLowerCase())){
-              setSearchHome((prevHomes) => [
-                  ...prevHomes,
-                  home,
-              ]);
-          }
-         })
+        const newList=homes.filter(home=>{
+          return home.description.toLowerCase().includes(search.toLowerCase())
+        })
+        setSearchHome(newList)
       }
       else {
         setSearchHome([])
@@ -141,12 +137,12 @@ function App() {
             </div>
             <div className='search_result'>
                 {
-                    searchHome.map((home,index)=>{
+                    searchHome.map((home,index)=>(
 
-                    return <a onClick={()=>togglePop(home)} key={index} target='_blank' className={selectedItem===index?'search_suggestion_line active':'search_suggestion_line'}>
+                     <a onClick={()=>togglePop(home)} key={index} target='_blank' className={selectedItem===index?'search_suggestion_line active':'search_suggestion_line'}>
                     {home.name}
                 </a>
-                    })
+                    ))
                 }
             </div>
             
