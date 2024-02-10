@@ -65,6 +65,7 @@ contract Escrow {
             purchasePrice[_nftID]=_purchase;
             buyer[_nftID]=_buyer;
             escrowAmount[_nftID]=_amount;
+            
     }
 
     function depositEarnest(uint256 _nftID) public payable onlyBuyer(_nftID) minimumamount(msg.value,_nftID) {}
@@ -79,11 +80,6 @@ contract Escrow {
     }
 
 
-    receive() external payable{}
-
-    function getBalance()public view returns(uint256){
-        return address(this).balance;
-    }
 
     function finalizeSale(uint _nftID) public inspectionClear(_nftID){
        require(address(this).balance>=purchasePrice[_nftID]); 
@@ -93,11 +89,16 @@ contract Escrow {
     }
 
     function cancelSale(uint256 _nftID) public {
-        if (inspectionPassed[_nftID] = false) {
+        if (inspectionPassed[_nftID] == false) {
             payable(buyer[_nftID]).transfer(address(this). balance);
         } 
         else {
             payable(seller).transfer(address(this). balance);
         }
 }
+    receive() external payable{}
+
+    function getBalance()public view returns(uint256){
+        return address(this).balance;
+    }
 }

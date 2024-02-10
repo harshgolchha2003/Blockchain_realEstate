@@ -11,7 +11,7 @@ describe('Escrow', () => {
     beforeEach(async()=>{
 
         [buyer,seller,inspector,lender]=await ethers.getSigners();
-        // console.log(signers.length)
+        console.log(lender(3))
 
         //Deploy
         const RealEstate = await ethers.getContractFactory('RealEstate');
@@ -29,6 +29,7 @@ describe('Escrow', () => {
         //listing
         transaction =await escrow.connect(seller).list(1,buyer.address,tokens(10),tokens(5))
         await transaction.wait()
+        // console.log(seller.address)
 
     })
 

@@ -28,23 +28,20 @@ function App() {
 
   const loadBlockachainData=async()=>{
     const provider=new ethers.providers.Web3Provider(window.ethereum)
-    // console.log("aaaaa")
     setProvider(provider)
 
     const network=await provider.getNetwork()
 
     const realEstate=new ethers.Contract( config[network.chainId].realEstate.address,RealEstate,provider)
     const totalSupply=await realEstate.total_Supply()
-    setHomes([])
+    const homes=[]
     for(let i=1;i<=totalSupply;i++){
       const uri=await realEstate.tokenURI(i);
       const response=await fetch(uri)
       const metadata=await response.json()
-      setHomes((prevHomes) => [
-        ...prevHomes,
-        metadata,
-    ]);
+    homes.push(metadata);
     }
+    setHomes(homes)
     const escrow=new ethers.Contract( config[network.chainId].escrow.address,Escrow,provider)
     setEscrow(escrow);
 
@@ -56,13 +53,8 @@ function App() {
     })
   }
   useEffect(()=>{
-    setHomes([]) 
-    loadBlockachainData();
-    // return ()=>clearInterval(id);
-    
-
-    
-  },([]))
+    loadBlockachainData(); 
+  },[])
 
   const togglePop=(home)=>{
     setHome(home);
@@ -173,7 +165,7 @@ function App() {
               ))}  
         </div>
       </div>
-      {toggle &&(<Home home={home} provider={provider} account={account} escrow={escrow} togglePop={togglePop}/>)
+      {toggle &&(<Home home={home} provider={provider} account={account} escrow={escrow} togglePop={togglePop} />)
       }
   </div>
   );
